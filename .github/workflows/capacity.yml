@@ -21,18 +21,21 @@ jobs:
       - name: Instalar Dependências
         run: composer install --no-dev --prefer-dist --no-progress
 
-      - name: Gerar arquivo da chave privada
-        run: echo "${{ secrets.OCI_KEY_CONTENT }}" > private_key.pem
+      - name: Criar arquivo .env e chave privada
+        run: |
+          echo "${{ secrets.OCI_KEY_CONTENT }}" > private_key.pem
+          cat <<EOF > .env
+          OCI_REGION=${{ secrets.OCI_REGION }}
+          OCI_USER_ID=${{ secrets.OCI_USER_OCID }}
+          OCI_TENANCY_ID=${{ secrets.OCI_TENANCY_OCID }}
+          OCI_COMPARTMENT_ID=${{ secrets.OCI_COMPARTMENT_OCID }}
+          OCI_SUBNET_ID=${{ secrets.OCI_SUBNET_OCID }}
+          OCI_KEY_FINGERPRINT=${{ secrets.OCI_FINGERPRINT }}
+          OCI_KEY_FILENAME=private_key.pem
+          OCI_PRIVATE_KEY_FILENAME=private_key.pem
+          OCI_OCPUS=${{ secrets.OCI_MAX_OCPU }}
+          OCI_MEMORY_IN_GBS=${{ secrets.OCI_MAX_MEMORY_IN_GBS }}
+          EOF
 
       - name: Executar Busca de Capacidade na Oracle
-        env:
-          OCI_REGION: ${{ secrets.OCI_REGION }}
-          OCI_USER_ID: ${{ secrets.OCI_USER_OCID }}
-          OCI_TENANCY_ID: ${{ secrets.OCI_TENANCY_OCID }}
-          OCI_KEY_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
-          OCI_KEY_FILENAME: private_key.pem
-          OCI_COMPARTMENT_ID: ${{ secrets.OCI_COMPARTMENT_OCID }}
-          OCI_SUBNET_ID: ${{ secrets.OCI_SUBNET_OCID }}
-          OCI_OCPUS: ${{ secrets.OCI_MAX_OCPU }}
-          OCI_MEMORY_IN_GBS: ${{ secrets.OCI_MAX_MEMORY_IN_GBS }}
         run: php index.php
