@@ -33,8 +33,3 @@ jobs:
           OCI_OCPUS: ${{ secrets.OCI_MAX_OCPU }}
           OCI_MEMORY_IN_GBS: ${{ secrets.OCI_MAX_MEMORY_IN_GBS }}
         run: php index.php
-          OCI_REGION: ${{ secrets.OCI_REGION }}
-          OCI_KEY_CONTENT: ${{ secrets.OCI_KEY_CONTENT }}
-          OCI_MAX_OCPU: ${{ secrets.OCI_MAX_OCPU }}
-          OCI_MAX_MEMORY_IN_GBS: ${{ secrets.OCI_MAX_MEMORY_IN_GBS }}
-        run: php index.php
