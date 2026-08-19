@@ -23,11 +23,16 @@ jobs:
 
       - name: Executar Busca de Capacidade na Oracle
         env:
-          OCI_USER_OCID: ${{ secrets.OCI_USER_OCID }}
-          OCI_TENANCY_OCID: ${{ secrets.OCI_TENANCY_OCID }}
-          OCI_COMPARTMENT_OCID: ${{ secrets.OCI_COMPARTMENT_OCID }}
-          OCI_SUBNET_OCID: ${{ secrets.OCI_SUBNET_OCID }}
-          OCI_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
+          OCI_REGION: ${{ secrets.OCI_REGION }}
+          OCI_USER_ID: ${{ secrets.OCI_USER_OCID }}
+          OCI_TENANT_ID: ${{ secrets.OCI_TENANCY_OCID }}
+          OCI_COMPARTMENT_ID: ${{ secrets.OCI_COMPARTMENT_OCID }}
+          OCI_SUBNET_ID: ${{ secrets.OCI_SUBNET_OCID }}
+          OCI_KEY_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
+          OCI_KEY_CONTENT: ${{ secrets.OCI_KEY_CONTENT }}
+          OCI_OCPUS: ${{ secrets.OCI_MAX_OCPU }}
+          OCI_MEMORY_IN_GBS: ${{ secrets.OCI_MAX_MEMORY_IN_GBS }}
+        run: php index.php
           OCI_REGION: ${{ secrets.OCI_REGION }}
           OCI_KEY_CONTENT: ${{ secrets.OCI_KEY_CONTENT }}
           OCI_MAX_OCPU: ${{ secrets.OCI_MAX_OCPU }}
