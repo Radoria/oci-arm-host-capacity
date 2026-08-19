@@ -25,7 +25,6 @@ jobs:
         run: |
           echo "${{ secrets.OCI_KEY_CONTENT }}" > private_key.pem
           
-          # Se a Secret OCI_IMAGE_ID não existir, usa o OCID padrão do Ubuntu 22.04 ARM (São Paulo)
           IMAGE_ID="${{ secrets.OCI_IMAGE_ID }}"
           if [ -z "$IMAGE_ID" ]; then
             IMAGE_ID="ocid1.image.oc1.sa-saopaulo-1.aaaaaaaaridfqffskkfnob3bohkol53qhirbl3fwgtkkh4azs4m6hrl7iz7q"
@@ -38,6 +37,7 @@ jobs:
           OCI_COMPARTMENT_ID=${{ secrets.OCI_COMPARTMENT_OCID }}
           OCI_SUBNET_ID=${{ secrets.OCI_SUBNET_OCID }}
           OCI_IMAGE_ID=$IMAGE_ID
+          OCI_SHAPE=VM.Standard.A1.Flex
           OCI_KEY_FINGERPRINT=${{ secrets.OCI_FINGERPRINT }}
           OCI_KEY_FILENAME=private_key.pem
           OCI_PRIVATE_KEY_FILENAME=private_key.pem
