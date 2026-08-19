@@ -21,10 +21,17 @@ jobs:
       - name: Instalar Dependências
         run: composer install --no-dev --prefer-dist --no-progress
 
-      - name: Criar arquivo .env e chave privada
+      - name: Criar arquivo .env e chaves
         run: |
           echo "${{ secrets.OCI_KEY_CONTENT }}" > private_key.pem
           
+          # Se não houver Secret de chave SSH, gera uma temporária para não travar a criação
+          SSH_KEY='${{ secrets.OCI_SSH_PUBLIC_KEY }}'
+          if [ -z "$SSH_KEY" ]; then
+            ssh-keygen -t rsa -b 2048 -f vm_ssh_key -N ""
+            SSH_KEY=$(cat vm_ssh_key.pub)
+          fi
+
           IMAGE_ID="${{ secrets.OCI_IMAGE_ID }}"
           if [ -z "$IMAGE_ID" ]; then
             IMAGE_ID="ocid1.image.oc1.sa-saopaulo-1.aaaaaaaaridfqffskkfnob3bohkol53qhirbl3fwgtkkh4azs4m6hrl7iz7q"
@@ -38,6 +45,7 @@ jobs:
           OCI_SUBNET_ID=${{ secrets.OCI_SUBNET_OCID }}
           OCI_IMAGE_ID=$IMAGE_ID
           OCI_SHAPE=VM.Standard.A1.Flex
+          OCI_SSH_PUBLIC_KEY=$SSH_KEY
           OCI_KEY_FINGERPRINT=${{ secrets.OCI_FINGERPRINT }}
           OCI_KEY_FILENAME=private_key.pem
           OCI_PRIVATE_KEY_FILENAME=private_key.pem
